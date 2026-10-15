@@ -10,8 +10,8 @@ env_ok: requirements.txt
 
 .PHONY: fmt
 fmt: env_ok
-	env/bin/isort --sp .isort.cfg app/*.py
-	env/bin/black app/*.py
+	env/bin/isort --sp .isort.cfg src/ tests/
+	env/bin/black src/ tests/
 
 .PHONY: check
 check: env_ok
@@ -21,9 +21,9 @@ check: env_ok
 		--ignore-missing-imports \
 		./
 	env/bin/python -m flake8 --select F ./ --exclude=./env
-	env/bin/isort  --sp .isort.cfg  --check app/*.py
-	env/bin/black --check app/*.py
+	env/bin/isort  --sp .isort.cfg  --check src/ tests/
+	env/bin/black --check src/ tests/
 
 .PHONY: test
 test: check
-	env/bin/python -m unittest discover ./app -p "*.py" -v
+	PYTHONPATH=./src env/bin/python -m unittest discover tests/ -p "*.py" -v
